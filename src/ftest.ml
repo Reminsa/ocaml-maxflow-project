@@ -1,4 +1,5 @@
 open Gfile
+open Tools
     
 let () =
 
@@ -26,10 +27,19 @@ let () =
   in
 
   (* Open file *)
-  let graph = from_file infile in
+   let graph = from_file infile in
+
+  (* let graph = clone_nodes graph in*)
+
+ (*let graph = gmap graph (fun arc -> arc.src = arc.src + 100) in*)
+
+ let graph2 = gmap graph (fun _ -> "yolo") in 
+
+
+
 
   (* Rewrite the graph that has been read. *)
-  let () = write_file outfile graph in
+  let () = write_file outfile graph2 in
 
   ()
 
