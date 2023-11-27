@@ -4,7 +4,7 @@ open Tools
 let () =
 
 	(* Check the number of command-line arguments *)
-  	if Array.length Sys.argv <> 5 then
+  	if Array.length Sys.argv <> 6 then
     	begin
 			Printf.printf
 				"\n ✻  Usage: %s infile source sink outfile\n\n%s%!" Sys.argv.(0)
@@ -20,6 +20,7 @@ let () =
   
   	let infile = Sys.argv.(1)
   	and outfile = Sys.argv.(4)
+	and outfiledot = Sys.argv.(5)
   
   (* These command-line arguments are not used for the moment. *)
 	and _source = int_of_string Sys.argv.(2)
@@ -27,18 +28,20 @@ let () =
  	in
 
  	(* Open file *)
-  	let graph = from_file infile in
+  	let graph = from_file infile in (*Génère un string graph*)
 
- 	(* let graph = clone_nodes graph in*)
+ 	(*let graph = clone_nodes graph in (*Clone le graph sans arcs*)*)
 
-	let graph = gmap graph (fun x -> int_of_string x) in 
+	let graph = gmap graph (fun x -> int_of_string x) in (*transforme de string graph en int graph*)
 
-	let graph = add_arc graph 0 5 100 in
+	let graph = add_arc graph 0 5 100 in (*On modifie/rajoute un arc*)
 
-	let graph = gmap graph (fun x -> string_of_int x) in
+	let graph = gmap graph (fun x -> string_of_int x) in (* On retransforme en string graph pour le truc d'après*)
 
   	(* Rewrite the graph that has been read. *)
   	let () = write_file outfile graph in
+
+	let () = export outfiledot graph in
 
   	()
 
