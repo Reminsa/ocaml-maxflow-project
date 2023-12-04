@@ -1,7 +1,19 @@
 open Gfile
 open Tools
+open FordFulkerson
+open Graph
     
-let () =
+
+
+	let () =
+
+		let rec display_arc_list (arc_list) =
+			match arc_list with
+			| [] -> ()
+			| arc::[] -> Printf.printf "%d\n%d\n" arc.src arc.tgt
+			| arc::suite -> Printf.printf "%d\n" arc.src; display_arc_list suite
+		in		
+
 
 	(* Check the number of command-line arguments *)
   	if Array.length Sys.argv <> 6 then
@@ -36,12 +48,17 @@ let () =
 
 	let graph = add_arc graph 0 5 100 in (*On modifie/rajoute un arc*)
 
+	let () = display_arc_list (find_path graph 3 5) in
+
+	let () = Printf.printf "%d\n" (calcul_increment (find_path graph 3 5)) in
+	
 	let graph = gmap graph (fun x -> string_of_int x) in (* On retransforme en string graph pour le truc d'après*)
 
   	(* Rewrite the graph that has been read. *)
   	let () = write_file outfile graph in
 
 	let () = export outfiledot graph in
+
 
   	()
 
