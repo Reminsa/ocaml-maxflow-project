@@ -1,7 +1,7 @@
 open Gfile
 open Tools
-open FordFulkerson
 open Graph
+open Fordfulkerson
     
 
 
@@ -44,18 +44,20 @@ open Graph
 
  	(*let graph = clone_nodes graph in (*Clone le graph sans arcs*)*)
 
-	let graph = gmap graph (fun x -> int_of_string x) in (*transforme de string graph en int graph*)
+	let graph = gmap graph (fun arc -> let updated_arc = {arc with lbl = int_of_string arc.lbl} in updated_arc) in (*transforme de string graph en int graph*)
 
-	let graph = add_arc graph 0 5 100 in (*On modifie/rajoute un arc*)
+	(*let graph = add_arc graph 0 5 100 in (*On modifie/rajoute un arc*)*)
 
-	let () = display_arc_list (find_path graph 3 5) in
+	let () = display_arc_list (find_path graph 0 5) in
 
-	let () = Printf.printf "%d\n" (calcul_increment (find_path graph 3 5)) in
+	let () = Printf.printf "%d\n" (calcul_decrement (find_path graph 0 5)) in
+
+	let graph = graph_final graph 0 5 in
 	
-	let graph = gmap graph (fun x -> string_of_int x) in (* On retransforme en string graph pour le truc d'après*)
+	let graph = gmap graph (fun arc -> let updated_arc = {arc with lbl = string_of_int arc.lbl} in updated_arc) in (* On retransforme en string graph pour le truc d'après*)
 
-  	(* Rewrite the graph that has been read. *)
-  	let () = write_file outfile graph in
+  (* Rewrite the graph that has been read. *)
+  let () = write_file outfile graph in
 
 	let () = export outfiledot graph in
 

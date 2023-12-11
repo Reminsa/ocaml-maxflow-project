@@ -3,7 +3,9 @@ open Graph
 let clone_nodes gr = n_fold gr (fun g id -> new_node g id) empty_graph;;
   
 let gmap gr f  =
-  e_fold gr (fun acc arc -> new_arc acc { arc with lbl = f arc.lbl }) (clone_nodes gr);;
+  e_fold gr (fun acc arc -> new_arc acc (f arc)) (clone_nodes gr);;
+
+
 
 let add_arc g id1 id2 n =
   let arc = { src = id1; tgt = id2; lbl = n } in
