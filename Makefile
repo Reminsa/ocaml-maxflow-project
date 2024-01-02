@@ -24,7 +24,7 @@ edit:
 
 demo: build
 	@echo "\n   ⚡  EXECUTING  ⚡\n"
-	./ftest.exe graphs/${graph} $(src) $(dst) outfile outfiledot graphs/parcoursup_data.txt outfile_biparti outfiledot_biparti
+	./ftest.exe graphs/${graph} $(src) $(dst) outfile outfiledot graphs/parcoursup_data.txt outfile_biparti outfiledot_biparti outfile_solution
 	@echo "\n   🥁  RESULT (content of outfile)  🥁\n"
 	@cat outfile
 	dot -Tsvg outfiledot > graph.svg

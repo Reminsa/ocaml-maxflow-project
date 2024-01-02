@@ -9,7 +9,7 @@ open Bipartite
 	let () =
 
 	(* Check the number of command-line arguments *)
-  	if Array.length Sys.argv <> 9 then
+  	if Array.length Sys.argv <> 10 then
     	begin
 			Printf.printf
 				"\n ✻  Usage: %s infile source sink outfile\n\n%s%!" Sys.argv.(0)
@@ -29,6 +29,7 @@ open Bipartite
 		and infile_bip = Sys.argv.(6)
 		and outfile_biparti = Sys.argv.(7)
   	and outfiledot_biparti = Sys.argv.(8)
+		and outfile_solution = Sys.argv.(9)
 
   (* These command-line arguments are not used for the moment. *)
 	and _source = int_of_string Sys.argv.(2)
@@ -60,6 +61,7 @@ open Bipartite
 	let graph_bip = gmap graph_bip (fun arc -> let updated_arc = {arc with lbl = string_of_int arc.lbl} in updated_arc) in (* On retransforme en string graph pour le truc d'après*)
   let () = write_file outfile_biparti graph_bip in
   let () = export outfiledot_biparti graph_bip  in
-
+	let graph_bip = gmap graph_bip (fun arc -> let updated_arc = {arc with lbl = int_of_string arc.lbl} in updated_arc) in
+ 	let () = school_to_candidate infile graph_bip outfile_solution in
+	
 	()
-
