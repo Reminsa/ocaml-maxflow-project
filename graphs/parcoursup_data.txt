@@ -1,0 +1,35 @@
+%% Candidates
+% candidate id 
+  candidate 1 
+  candidate 2
+  candidate 3
+  candidate 4
+  candidate 5
+  candidate 6
+  candidate 7
+
+
+%% Schools
+% school id 
+  school 8
+  school 9
+  school 10
+  school 11
+  school 12
+  school 13
+  school 14
+
+
+%% Candidate wishes to go to a certain school
+% wish candidate school
+  wish 1 8
+  wish 2 8
+  wish 2 9
+  wish 3 12
+  wish 7 14
+  wish 4 13
+  wish 4 9
+  wish 6 11
+  wish 5 10
+  wish 5 11
+  

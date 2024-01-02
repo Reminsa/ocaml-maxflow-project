@@ -2,21 +2,14 @@ open Gfile
 open Tools
 open Graph
 open Fordfulkerson
+open Bipartite
     
 
 
 	let () =
 
-		let rec display_arc_list (arc_list) =
-			match arc_list with
-			| [] -> ()
-			| arc::[] -> Printf.printf "%d\n%d\n" arc.src arc.tgt
-			| arc::suite -> Printf.printf "%d\n" arc.src; display_arc_list suite
-		in		
-
-
 	(* Check the number of command-line arguments *)
-  	if Array.length Sys.argv <> 6 then
+  	if Array.length Sys.argv <> 9 then
     	begin
 			Printf.printf
 				"\n ✻  Usage: %s infile source sink outfile\n\n%s%!" Sys.argv.(0)
@@ -32,25 +25,24 @@ open Fordfulkerson
   
   	let infile = Sys.argv.(1)
   	and outfile = Sys.argv.(4)
-	and outfiledot = Sys.argv.(5)
-  
+		and outfiledot = Sys.argv.(5)
+		and infile_bip = Sys.argv.(6)
+		and outfile_biparti = Sys.argv.(7)
+  	and outfiledot_biparti = Sys.argv.(8)
+
   (* These command-line arguments are not used for the moment. *)
 	and _source = int_of_string Sys.argv.(2)
   	and _sink = int_of_string Sys.argv.(3)
  	in
 
  	(* Open file *)
-  	let graph = from_file infile in (*Génère un string graph*)
+  let graph = from_file infile in (*Génère un string graph*)
 
  	(*let graph = clone_nodes graph in (*Clone le graph sans arcs*)*)
 
 	let graph = gmap graph (fun arc -> let updated_arc = {arc with lbl = int_of_string arc.lbl} in updated_arc) in (*transforme de string graph en int graph*)
 
 	(*let graph = add_arc graph 0 5 100 in (*On modifie/rajoute un arc*)*)
-
-	let () = display_arc_list (find_path graph 0 5 []) in
-
-	let () = Printf.printf "%d\n" (calcul_decrement (find_path graph 0 5 [])) in
 
 	let graph = graph_final graph 0 5 in
 	
@@ -62,5 +54,12 @@ open Fordfulkerson
 	let () = export outfiledot graph in
 
 
-  	()
+	(* Read_file test and export initial graph *)
+	let graph_bip = read_file infile_bip in (* crée un int graph depuis parcoursup_data.txt *)
+	let graph_bip = graph_final graph_bip 0 (-1) in
+	let graph_bip = gmap graph_bip (fun arc -> let updated_arc = {arc with lbl = string_of_int arc.lbl} in updated_arc) in (* On retransforme en string graph pour le truc d'après*)
+  let () = write_file outfile_biparti graph_bip in
+  let () = export outfiledot_biparti graph_bip  in
+
+	()
 

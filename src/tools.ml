@@ -6,6 +6,7 @@ let gmap gr f  =
   e_fold gr (fun acc arc -> new_arc acc (f arc)) (clone_nodes gr);;
 
 
+  
 
 let add_arc g id1 id2 n =
   let arc = { src = id1; tgt = id2; lbl = n } in
@@ -18,3 +19,4 @@ let add_arc g id1 id2 n =
     new_arc g updated_arc
   with
   | Not_found -> new_arc g arc
+
