@@ -1,6 +1,6 @@
 open Graph
 
-val find_path : int graph -> id -> id -> int arc list
+val find_path : int graph -> id -> id -> int list -> int arc list
 
 val calcul_decrement : int arc list -> int
 

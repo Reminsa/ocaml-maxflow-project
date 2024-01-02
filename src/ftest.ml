@@ -48,9 +48,9 @@ open Fordfulkerson
 
 	(*let graph = add_arc graph 0 5 100 in (*On modifie/rajoute un arc*)*)
 
-	let () = display_arc_list (find_path graph 0 5) in
+	let () = display_arc_list (find_path graph 0 5 []) in
 
-	let () = Printf.printf "%d\n" (calcul_decrement (find_path graph 0 5)) in
+	let () = Printf.printf "%d\n" (calcul_decrement (find_path graph 0 5 [])) in
 
 	let graph = graph_final graph 0 5 in
 	
