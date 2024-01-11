@@ -2,27 +2,6 @@ open Graph
 open Tools
 
 
-(*
-let rec find_path graph id_src id_dest =
-  if id_src = id_dest then []
-  else
-    match find_arc graph id_src id_dest with
-    | Some arc -> if arc.lbl > 0 then [arc] else []  
-    | None ->
-        let out_arc_list = out_arcs graph id_src in
-        let rec find_path_from_neighbors arcs =
-          match arcs with
-          | [] -> []
-          | arc :: rest ->
-              match find_path graph arc.tgt id_dest with
-              | [] -> find_path_from_neighbors rest
-              | path -> if arc.lbl > 0 then arc::path else find_path_from_neighbors rest
-        in
-        find_path_from_neighbors out_arc_list
-*)
-
-(* CYCLES !!!!*)
-
 let rec find_path graph current_id id_dest visited =
   if current_id = id_dest then []
   else
@@ -42,7 +21,7 @@ let rec find_path graph current_id id_dest visited =
         find_path_from_neighbors out_arc_list
 
 
-let calcul_decrement arc_list = match arc_list with
+let calcul_increment arc_list = match arc_list with
   | [] -> 0
   | liste -> List.fold_left (fun accu x -> if x.lbl < accu then x.lbl else accu) max_int liste
 
@@ -60,7 +39,13 @@ let rec graph_final graph id_src id_dest =
     match arc_list with
       | [] -> graph
       | arc_list ->  
-        let value = calcul_decrement arc_list in 
+        let value = calcul_increment arc_list in 
           graph_final (update graph arc_list value) id_src id_dest
 
-          
+
+let graph_ecart_to_graph graph_init graph_ecart = 
+  let arc_to_ecart arc graph_ecart = match (find_arc graph_ecart arc.src arc.tgt) with
+    | None -> 0
+    | Some arc -> arc.lbl 
+  in
+    gmap graph_init (fun arc -> let updated_arc = {arc with lbl = arc.lbl - arc_to_ecart arc graph_ecart} in updated_arc) 

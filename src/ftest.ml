@@ -3,13 +3,15 @@ open Tools
 open Graph
 open Fordfulkerson
 open Bipartite
-    
+open GCostfile
+(* open Bellmanford *)
+
 
 
 	let () =
 
 	(* Check the number of command-line arguments *)
-  	if Array.length Sys.argv <> 10 then
+  	if Array.length Sys.argv <> 12 then
     	begin
 			Printf.printf
 				"\n ✻  Usage: %s infile source sink outfile\n\n%s%!" Sys.argv.(0)
@@ -30,11 +32,27 @@ open Bipartite
 		and outfile_biparti = Sys.argv.(7)
   	and outfiledot_biparti = Sys.argv.(8)
 		and outfile_solution = Sys.argv.(9)
+		and infile_BF = Sys.argv.(10)
+		and outfiledot_BF = Sys.argv.(11)
 
   (* These command-line arguments are not used for the moment. *)
 	and _source = int_of_string Sys.argv.(2)
   	and _sink = int_of_string Sys.argv.(3)
  	in
+
+	(* -----------------sessions Bellman Ford -------------------------- *)
+  let graph_BellFord = from_file_cost infile_BF in (*Génère un string graph*)
+	let () = export_cost outfiledot_BF graph_BellFord in
+	
+	 let _int_int_graph_Bellford = intGraph graph_BellFord in 
+	
+	
+
+
+
+	(* let result_path = find_path_mincost int_int_graph_Bellford 0 5 in 
+	
+	let () = print_path result_path in *)
 
  	(* Open file *)
   let graph = from_file infile in (*Génère un string graph*)
@@ -63,5 +81,8 @@ open Bipartite
   let () = export outfiledot_biparti graph_bip  in
 	let graph_bip = gmap graph_bip (fun arc -> let updated_arc = {arc with lbl = int_of_string arc.lbl} in updated_arc) in
  	let () = school_to_candidate infile graph_bip outfile_solution in
+
+
+	
 	
 	()
