@@ -4,7 +4,7 @@ open Graph
 open Fordfulkerson
 open Bipartite
 open GCostfile
-(* open Bellmanford *)
+open Bellmanford
 
 
 
@@ -33,7 +33,7 @@ open GCostfile
   	and outfiledot_biparti = Sys.argv.(8)
 		and outfile_solution = Sys.argv.(9)
 		and infile_BF = Sys.argv.(10)
-		and outfiledot_BF = Sys.argv.(11)
+		(* and outfiledot_BF = Sys.argv.(11) *)
 
   (* These command-line arguments are not used for the moment. *)
 	and _source = int_of_string Sys.argv.(2)
@@ -42,9 +42,11 @@ open GCostfile
 
 	(* -----------------sessions Bellman Ford -------------------------- *)
   let graph_BellFord = from_file_cost infile_BF in (*Génère un string graph*)
-	let () = export_cost outfiledot_BF graph_BellFord in
 	
-	 let _int_int_graph_Bellford = intGraph graph_BellFord in 
+	
+	 let result_path = find_path_mincost graph_BellFord 0 5 in  
+
+	 let () = print_path result_path in
 	
 	
 

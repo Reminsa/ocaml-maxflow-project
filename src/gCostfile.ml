@@ -95,7 +95,7 @@ let read_node graph line =
 
 (* Ensure that the given node exists in the graph. If not, create it. 
  * (Necessary because the website we use to create online graphs does not generate correct files when some nodes have been deleted.) *)
-let ensure graph id = if node_exists graph id then graph else new_node graph id
+(* let ensure graph id = if node_exists graph id then graph else new_node graph id *)
 
 
 
@@ -106,15 +106,12 @@ let ensure graph id = if node_exists graph id then graph else new_node graph id
   try
     Scanf.sscanf line "e %d %d %_d (%d, %d)"
       (fun src tgt flow cost ->
-       
-        
-           new_arc (ensure (ensure graph src) tgt) { src; tgt; lbl = (flow,cost) }
-         | _ ->
-           failwith "Invalid label format"
+        new_arc graph { src; tgt; lbl = (flow, cost) }
       )
   with e ->
     Printf.printf "Cannot read arc in line - %s:\n%s\n%!" (Printexc.to_string e) line;
     failwith "from_file"
+
 
 (* Reads a comment or fail. *)
 let read_comment graph line =
