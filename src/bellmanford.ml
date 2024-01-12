@@ -50,3 +50,20 @@ let print_path path =
 	List.iter (fun (id1,id2,_) -> Printf.printf "(%d,%d) " id1 id2 ) (path);
 	Printf.printf " -> min flow = %d & cost = %d" (find_flow_min path) (find_cost path);
 	Printf.printf " }\n"
+
+
+	let rec find_path graph current_id id_dest visited =
+		if current_id = id_dest then []
+		else
+			let out_arc_list = out_arcs graph current_id in
+			let rec find_path_from_neighbors arcs =
+				match arcs with
+				| [] -> []
+				| arc :: rest when not (List.mem arc.tgt visited) ->
+						let path_to_dest = find_path graph arc.tgt id_dest (arc.tgt :: visited) in
+						if fst arc.lbl > 0 && path_to_dest <> [] then arc :: path_to_dest
+						else find_path_from_neighbors rest
+				| _ :: rest -> find_path_from_neighbors rest
+			in
+			find_path_from_neighbors out_arc_list
+	

@@ -18,6 +18,8 @@ val find_path_mincost : label graph -> id -> id -> path
 (*print_path path  : print this path in terminal*)
 val print_path : path -> unit
 
+val find_path : (id * 'a) graph -> id -> id -> id list -> (id * 'a) arc list
+
 (*update_graph g path : update the graph when having the value flot_min got by a path *)
 (* val update_graph : label graph -> path -> label graph *)
 

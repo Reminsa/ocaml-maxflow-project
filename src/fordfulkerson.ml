@@ -26,13 +26,24 @@ let calcul_increment arc_list = match arc_list with
   | liste -> List.fold_left (fun accu x -> if x.lbl < accu then x.lbl else accu) max_int liste
 
 
-let rec update graph arc_list value = 
-  match arc_list with
-  | [] -> graph
-  | arc::suite -> let updated_graph_forward = add_arc graph arc.src arc.tgt (-value) in 
-    let updated_graph_backward = add_arc updated_graph_forward arc.tgt arc.src value in 
+  let rec update graph arc_list value =
+    match arc_list with
+    | [] -> graph
+    | arc::suite ->
+      let updated_graph_forward = add_arc graph arc.src arc.tgt (-value) in
+      let updated_graph_backward =
+        match find_arc updated_graph_forward arc.tgt arc.src with
+        | Some(existing_arc) ->
+          (* Check if the existing arc has a greater label than the new arc *)
+          if existing_arc.lbl > value then
+            updated_graph_forward
+          else
+            add_arc updated_graph_forward arc.tgt arc.src value
+        | None ->
+          add_arc updated_graph_forward arc.tgt arc.src value
+      in
       update updated_graph_backward suite value
-
+  
 
 let rec graph_final graph id_src id_dest =
   let arc_list = find_path graph id_src id_dest [] in 

@@ -61,11 +61,13 @@ open Bellmanford
 
  	(*let graph = clone_nodes graph in (*Clone le graph sans arcs*)*)
 
-	let graph = gmap graph (fun arc -> let updated_arc = {arc with lbl = int_of_string arc.lbl} in updated_arc) in (*transforme de string graph en int graph*)
+	let graphinit = gmap graph (fun arc -> let updated_arc = {arc with lbl = int_of_string arc.lbl} in updated_arc) in (*transforme de string graph en int graph*)
 
 	(*let graph = add_arc graph 0 5 100 in (*On modifie/rajoute un arc*)*)
 
-	let graph = graph_final graph 0 5 in
+	let graphecart= graph_final graphinit 0 3 in
+
+	let graph = graph_ecart_to_graph graphinit graphecart in  
 	
 	let graph = gmap graph (fun arc -> let updated_arc = {arc with lbl = string_of_int arc.lbl} in updated_arc) in (* On retransforme en string graph pour le truc d'après*)
 
@@ -76,14 +78,15 @@ open Bellmanford
 
 
 	(* Read_file test and export initial graph *)
-	let graph_bip = read_file infile_bip in (* crée un int graph depuis parcoursup_data.txt *)
-	let graph_bip = graph_final graph_bip 0 (-1) in
+	let graph_bip_init = read_file infile_bip in (* crée un int graph depuis parcoursup_data.txt *)
+	let graph_bip_ecart = graph_final graph_bip_init 0 (-1) in
+	let graph_bip = graph_ecart_to_graph graph_bip_init graph_bip_ecart in  
 	let graph_bip = gmap graph_bip (fun arc -> let updated_arc = {arc with lbl = string_of_int arc.lbl} in updated_arc) in (* On retransforme en string graph pour le truc d'après*)
   let () = write_file outfile_biparti graph_bip in
   let () = export outfiledot_biparti graph_bip  in
 	let graph_bip = gmap graph_bip (fun arc -> let updated_arc = {arc with lbl = int_of_string arc.lbl} in updated_arc) in
  	let () = school_to_candidate infile graph_bip outfile_solution in
-
+		
 
 	
 	
