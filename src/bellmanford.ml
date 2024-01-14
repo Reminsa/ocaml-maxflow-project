@@ -52,7 +52,9 @@ let print_path path =
 	Printf.printf " }\n"
 
 
-	let rec find_path graph current_id id_dest visited =
+
+
+(* let rec find_path graph current_id id_dest visited =
 		if current_id = id_dest then []
 		else
 			let out_arc_list = out_arcs graph current_id in
@@ -65,5 +67,65 @@ let print_path path =
 						else find_path_from_neighbors rest
 				| _ :: rest -> find_path_from_neighbors rest
 			in
-			find_path_from_neighbors out_arc_list
-	
+			find_path_from_neighbors out_arc_list *)
+
+
+
+
+let calcul_increment arc_list =
+				match arc_list with
+				| [] -> 0 
+				| liste -> List.fold_left (fun accu (_, _, (flow, _)) -> min flow accu) max_int liste
+
+
+let update_arc g id1 id2 (flow, cost) =
+				let arc = { src = id1; tgt = id2; lbl = (flow, cost) } in
+				try
+					let existing_arc = match find_arc g id1 id2 with
+						| Some a -> a
+						| None -> raise Not_found
+					in
+					let updated_arc = { existing_arc with lbl = (fst existing_arc.lbl + flow, snd existing_arc.lbl + cost) } in
+					new_arc g updated_arc
+				with
+				| Not_found -> new_arc g arc
+
+
+
+let rec update graph arc_list value =
+				match arc_list with
+				| [] -> graph
+				| _arc ::suite -> 
+					let updated_graph_forward =  match arc_list with 
+						| [] -> graph
+						| (a,b,( _flow,cost)):: _rest -> 
+							(* update updated_graph_backward suite value  *)
+						
+						update_arc graph a b (-value,cost) in 
+					
+					
+					
+					
+					let updated_graph_backward =  match arc_list with 
+						|	[] ->  graph
+						|	(a,b,(_flow,cost))::_rest ->  match find_arc updated_graph_forward b a with 
+												| Some(existing_arc) -> 
+						 
+													if fst existing_arc.lbl > value then
+														updated_graph_forward
+													else
+														update_arc updated_graph_forward b a (value , cost)
+												| None -> 
+													update_arc updated_graph_forward b a (value , 0 - cost)
+					in
+					update updated_graph_backward suite value 
+			
+
+let rec graph_final_bell graph id_src id_dest =
+						let arc_list = find_path_mincost graph id_src id_dest in 
+							match arc_list with
+								| [] -> graph
+								| arc_list ->  
+									let value = calcul_increment arc_list in 
+										graph_final_bell (update graph arc_list value) id_src id_dest
+					

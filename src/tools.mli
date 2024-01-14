@@ -7,3 +7,4 @@ val gmap: 'a graph -> ('a arc -> 'b arc) -> 'b graph
 
 
 val add_arc: int graph -> id -> id -> int -> int graph
+

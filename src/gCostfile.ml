@@ -160,5 +160,11 @@ let from_file_cost path =
       let flow, cost = arc.lbl in
       let updated_arc = { arc with lbl = (int_of_string flow, int_of_string cost) } in
       updated_arc)
+
+  let stringGraph graph =
+    gmap graph (fun arc ->
+      let flow, cost = arc.lbl in
+      let updated_arc = { arc with lbl = (string_of_int flow, string_of_int cost) } in
+      updated_arc)
   
 (*transforme de (string*string) graph en (int*int) graph*)

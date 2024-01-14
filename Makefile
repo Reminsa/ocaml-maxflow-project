@@ -2,7 +2,7 @@
 
 src?=0
 dst?=5
-graph?=graph7.txt
+graph?=graph1.txt
 
 all: build
 
@@ -24,13 +24,15 @@ edit:
 
 demo: build
 	@echo "\n   ⚡  EXECUTING  ⚡\n"
-	./ftest.exe graphs/${graph} $(src) $(dst) outfile outfiledot graphs/parcoursup_data.txt outfile_biparti outfiledot_biparti outfile_solution graphs/graphBF.txt outfiledot_BF
+	./ftest.exe graphs/${graph} $(src) $(dst) outfile outfiledot graphs/parcoursup_data.txt outfile_biparti outfiledot_biparti outfile_solution graphs/graphBF.txt outfile_BF outfiledot_BF
 	@echo "\n   🥁  RESULT (content of outfile)  🥁\n"
 	@cat outfile
 	dot -Tsvg outfiledot > graph.svg
 	@echo "\n   🥁  RESULT (content of outfile_biparti)  🥁\n"
 	@cat outfile_biparti
 	dot -Tsvg outfiledot_biparti > graph_biparti.svg
+	@cat outfile_BF
+	dot -Tsvg outfiledot_BF > graph_BF.svg
 
 
 clean:

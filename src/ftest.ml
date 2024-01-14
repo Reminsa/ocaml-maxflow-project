@@ -11,7 +11,7 @@ open Bellmanford
 	let () =
 
 	(* Check the number of command-line arguments *)
-  	if Array.length Sys.argv <> 12 then
+  	if Array.length Sys.argv <> 13 then
     	begin
 			Printf.printf
 				"\n ✻  Usage: %s infile source sink outfile\n\n%s%!" Sys.argv.(0)
@@ -25,14 +25,29 @@ open Bellmanford
 
   	(* Arguments are : infile(1) source-id(2) sink-id(3) outfile(4) *)
   
+	
+	
+		(*-------------- arguement pour le accpetable project----------*)
   	let infile = Sys.argv.(1)
   	and outfile = Sys.argv.(4)
 		and outfiledot = Sys.argv.(5)
+		(*-------------- arguement pour le accpetable project----------*)
+
+		(*-------------- arguement pour le medium project----------*)
 		and infile_bip = Sys.argv.(6)
 		and outfile_biparti = Sys.argv.(7)
   	and outfiledot_biparti = Sys.argv.(8)
 		and outfile_solution = Sys.argv.(9)
+		(*-------------- arguement pour le medium project----------*)
+
+		(*-------------- arguement pour le better project----------*)
 		and infile_BF = Sys.argv.(10)
+		and outfile_BF = Sys.argv.(11)
+		and outfiledot_BF = Sys.argv.(12)
+		(*-------------- arguement pour le better project----------*)
+
+
+
 		(* and outfiledot_BF = Sys.argv.(11) *)
 
   (* These command-line arguments are not used for the moment. *)
@@ -40,42 +55,39 @@ open Bellmanford
   	and _sink = int_of_string Sys.argv.(3)
  	in
 
-	(* -----------------sessions Bellman Ford -------------------------- *)
-  let graph_BellFord = from_file_cost infile_BF in (*Génère un string graph*)
+	(* -----------------sessions BellmanFord -------------------------- *)
+  let graph_BellFord = from_file_cost infile_BF in (*Génère un ( int*int) graph*)
+	let result_path = find_path_mincost graph_BellFord 0 5 in  
+	let graph_BellFord = graph_final_bell graph_BellFord 0 5 in
+	let graph_BellFord = stringGraph graph_BellFord in (* On retransforme en string*string graph pour le truc d'après*)
+	let () = write_file_cost outfile_BF graph_BellFord in
+	let () = export_cost outfiledot_BF graph_BellFord in
+	(* Rewrite the graph that has been read. *)
+  
 	
-	
-	 let result_path = find_path_mincost graph_BellFord 0 5 in  
 
-	 let () = print_path result_path in
+	let () = print_path result_path in
 	
 	
 
 
 
-	(* let result_path = find_path_mincost int_int_graph_Bellford 0 5 in 
-	
-	let () = print_path result_path in *)
+	(* -----------------sessions Fordfulkerson -------------------------- *)
 
  	(* Open file *)
   let graph = from_file infile in (*Génère un string graph*)
-
- 	(*let graph = clone_nodes graph in (*Clone le graph sans arcs*)*)
-
+(*let graph = clone_nodes graph in (*Clone le graph sans arcs*)*)
 	let graphinit = gmap graph (fun arc -> let updated_arc = {arc with lbl = int_of_string arc.lbl} in updated_arc) in (*transforme de string graph en int graph*)
-
 	(*let graph = add_arc graph 0 5 100 in (*On modifie/rajoute un arc*)*)
-
-	let graphecart= graph_final graphinit 0 3 in
-
+	let graphecart= graph_final graphinit 0 5 in
 	let graph = graph_ecart_to_graph graphinit graphecart in  
-	
 	let graph = gmap graph (fun arc -> let updated_arc = {arc with lbl = string_of_int arc.lbl} in updated_arc) in (* On retransforme en string graph pour le truc d'après*)
-
-  (* Rewrite the graph that has been read. *)
+	(* Rewrite the graph that has been read. *)
   let () = write_file outfile graph in
-
 	let () = export outfiledot graph in
 
+
+	(* -----------------sessions Bipartite -------------------------- *)
 
 	(* Read_file test and export initial graph *)
 	let graph_bip_init = read_file infile_bip in (* crée un int graph depuis parcoursup_data.txt *)

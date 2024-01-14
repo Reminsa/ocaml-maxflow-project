@@ -18,7 +18,18 @@ val find_path_mincost : label graph -> id -> id -> path
 (*print_path path  : print this path in terminal*)
 val print_path : path -> unit
 
-val find_path : (id * 'a) graph -> id -> id -> id list -> (id * 'a) arc list
+(* val find_path : (id * 'a) graph -> id -> id -> id list -> (id * 'a) arc list *)
+
+(* Update the graph by augmenting the flow along the found path *)
+val update : (int*int)  graph -> path -> int ->  (int*int) graph
+
+
+(* Find the final augmented graph from the source to the destination *)
+val graph_final_bell : (int*int) graph -> id -> id -> (int*int) graph
+
+
+(* Calculate the minimum increment along a path in the residual graph *)
+val calcul_increment : path -> int
 
 (*update_graph g path : update the graph when having the value flot_min got by a path *)
 (* val update_graph : label graph -> path -> label graph *)
